@@ -1,21 +1,28 @@
 package UserMenu;
 
-import java.util.concurrent.Callable;
-
 public class Action {
-    private final String actionName; // Наименование пукта меню
+    private final String actionName;       // Наименование пункта меню
     private final Executable actionMethod; // Метод, соответствующий этому пункту меню
+    private final boolean isExit;          // Если false - после выполнения метода заново отобразится меню
 
-    public Action(String actionName, Executable actionMethod) {
+    Action(String actionName, Executable actionMethod, boolean isExit) {
         this.actionName = actionName;
         this.actionMethod = actionMethod;
+        this.isExit = isExit;
     }
 
-    public String getActionName() {
+    String getActionName() {
         return actionName;
     }
 
+    boolean getIsExit() {
+        return isExit;
+    }
+
+    // Выполнение метода, привязанного к данному пункту меню
     void doAction() {
-        actionMethod.execute();
+        if (actionMethod != null) {
+            actionMethod.execute();
+        }
     }
 }

@@ -87,7 +87,6 @@ public class ShoppingCart {
         menuBuilder.setMenuName("Корзина");
         menuBuilder.addMenuItem("Показать состав корзины", this::showShoppingCartContent);
         menuBuilder.addMenuItem("Очистить корзину", this::clearShoppingCart);
-        //menuBuilder.addMenuItem("Удалить позицию", this::clearShoppingCart);
         menuBuilder.addMenuItem("Назад (в главное меню)", null, true);
         menuBuilder.build().show();
     }

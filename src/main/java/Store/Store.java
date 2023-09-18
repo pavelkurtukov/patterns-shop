@@ -160,10 +160,4 @@ public class Store {
         // Если дошли до сюда, значит, не нашли продукт с таким артикулом
         throw new ProductNotFoundException();
     }
-
-    // Сделать заказ
-    /*public void showOrders() {
-        System.out.println("Делаем заказ...");
-        //his.show();
-    }*/
 }

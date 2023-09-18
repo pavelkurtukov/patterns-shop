@@ -21,17 +21,6 @@ public class Main {
         menuBuilder.addMenuItem("Назад", null, true);
         UserMenu subMenu = menuBuilder.build();*/
 
-        // Главное меню магазина
-        /*menuBuilder = new UserMenuBuilder();
-        menuBuilder.setMenuName("Главное меню");
-        menuBuilder.addMenuItem("Каталог товаров", store::showCatalog);
-        menuBuilder.addMenuItem("Корзина", store::showShoppingCart);
-        //menuBuilder.addMenuItem("Мои заказы", store::showOrders);
-        //menuBuilder.addMenuItem("Подменю", subMenu::show);
-        menuBuilder.addMenuItem("Выход", () -> sayBye(userName), true);
-        UserMenu mainMenu = menuBuilder.build();
-
-        mainMenu.show();*/
         showMainMenu();
     }
 
@@ -42,10 +31,9 @@ public class Main {
 
         menuBuilder = new UserMenuBuilder();
         menuBuilder.setMenuName("Главное меню");
-        menuBuilder.addMenuItem("Каталог товаров", store::showCatalog);
+        menuBuilder.addMenuItem("Каталог товаров", store::showProductCatalog);
+        menuBuilder.addMenuItem("Каталог услуг", store::showServices);
         menuBuilder.addMenuItem("Корзина", shoppingCart::showShoppingCart);
-        //menuBuilder.addMenuItem("Мои заказы", store::showOrders);
-        //menuBuilder.addMenuItem("Подменю", subMenu::show);
         menuBuilder.addMenuItem("Выход", () -> sayBye(userName), true);
         UserMenu mainMenu = menuBuilder.build();
 

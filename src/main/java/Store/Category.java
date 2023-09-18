@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Category {
     private String name;
-    //private Map<String, Product> products = new HashMap<>(); // Артикул, Продукт
     private List<Product> products = new ArrayList<>();
 
     public Category(String name) throws IllegalArgumentException {
@@ -22,14 +21,6 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
-
-    /*public Map<String, Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Map<String, Product> products) {
-        this.products = products;
-    }*/
 
     public List<Product> getProducts() {
         return products;

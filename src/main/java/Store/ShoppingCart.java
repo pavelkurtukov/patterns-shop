@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShoppingCart {
+    private static final int MIN_ORDER_SUM = 1000; // Минимальная сумма заказа
     private static ShoppingCart shoppingCart;
     private Map<Saleable, Integer> content = new HashMap<>();
 
@@ -20,7 +21,17 @@ public class ShoppingCart {
         return content;
     }
 
-    // Добавление товара или услуги
+    public int getTotalSum() {
+        int totalSum = 0;
+        for (Map.Entry<Saleable, Integer> productEntry : content.entrySet()) {
+            Saleable product = productEntry.getKey();
+            int count = productEntry.getValue();
+            totalSum += count * product.getPrice();
+        }
+        return totalSum;
+    }
+
+    // Добавление товара или услуги в корзину
     public void add(Saleable product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
         // Если товар уже добавлен в корзину - увеличиваем кол-во товара
         if (content.containsKey(product)) {
@@ -81,12 +92,23 @@ public class ShoppingCart {
         }
     }
 
+    // Создание заказа
+    public void makeOrder() {
+        int totalSum = getTotalSum();
+        if (totalSum < MIN_ORDER_SUM) {
+            System.out.printf("Минимальная сумма заказа равна %d. Добавьте товаров или услуг ещё на %d\n", MIN_ORDER_SUM, MIN_ORDER_SUM - totalSum);
+            return;
+        }
+        System.out.println("[Оформление заказа не реализовано]");
+    }
+
     // Меню корзины
     public void showShoppingCartMenu() {
         UserMenuBuilder menuBuilder = new UserMenuBuilder();
         menuBuilder.setMenuName("Корзина");
         menuBuilder.addMenuItem("Показать состав корзины", this::showShoppingCartContent);
         menuBuilder.addMenuItem("Очистить корзину", this::clearShoppingCart);
+        menuBuilder.addMenuItem("Оформить заказ", this::makeOrder);
         menuBuilder.addMenuItem("Назад (в главное меню)", null, true);
         menuBuilder.build().show();
     }

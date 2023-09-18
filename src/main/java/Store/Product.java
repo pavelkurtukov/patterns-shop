@@ -1,6 +1,6 @@
 package Store;
 
-public class Product {
+public class Product implements Saleable {
     private String name; // Наименование товара
     private String description; // Описание
     private String articul; // Артикул

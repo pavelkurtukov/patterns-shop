@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ShoppingCart {
     private static ShoppingCart shoppingCart;
-    private Map<Product, Integer> products = new HashMap<>();
+    private Map<Saleable, Integer> content = new HashMap<>();
 
     private ShoppingCart() { }
 
@@ -16,16 +16,16 @@ public class ShoppingCart {
         return shoppingCart;
     }
 
-    public Map<Product, Integer> getCategories() {
-        return products;
+    public Map<Saleable, Integer> getContent() {
+        return content;
     }
 
-    public void addProduct(Product product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
+    public void addProduct(Saleable product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
         // Если товар уже добавлен в корзину - увеличиваем кол-во товара
-        if (products.containsKey(product)) {
-            products.put(product, products.get(product) + count);
+        if (content.containsKey(product)) {
+            content.put(product, content.get(product) + count);
         } else {
-            products.put(product, count);
+            content.put(product, count);
         }
         // Резервируем товар на складе
         product.reserve(count);
@@ -34,12 +34,12 @@ public class ShoppingCart {
     // Показать Корзину
     public void showShoppingCart() {
         ShoppingCart shoppingCart = ShoppingCart.getInstance();
-        Map<Product, Integer> categories = shoppingCart.getCategories();
+        Map<Saleable, Integer> categories = shoppingCart.getContent();
         if (!categories.isEmpty()) {
             int totalSum = 0;
             System.out.println("Содержимое корзины:");
-            for (Map.Entry<Product, Integer> cartRow : categories.entrySet()) {
-                Product product = cartRow.getKey();
+            for (Map.Entry<Saleable, Integer> cartRow : categories.entrySet()) {
+                Saleable product = cartRow.getKey();
                 int cartCount = cartRow.getValue();
                 System.out.printf("%d x %s\n", cartCount, product);
                 totalSum += cartCount * product.getPrice();
@@ -57,8 +57,8 @@ public class ShoppingCart {
         while (true) {
             String cleanConfirm = Asker.askString("Вы действительно хотите удалить все товары из корзины [Y/N]?");
             if (cleanConfirm.equalsIgnoreCase("y")) {
-                for (Map.Entry<Product, Integer> productEntry : products.entrySet()) {
-                    Product product = productEntry.getKey();
+                for (Map.Entry<Saleable, Integer> productEntry : content.entrySet()) {
+                    Saleable product = productEntry.getKey();
                     int count = productEntry.getValue();
                     try {
                         product.unreserve(count); // Возвращаем товар из резерва
@@ -66,7 +66,7 @@ public class ShoppingCart {
                         System.out.println(e.getMessage());
                     }
                 }
-                products.clear();
+                content.clear();
                 System.out.println("Корзина очищена");
                 return;
             }

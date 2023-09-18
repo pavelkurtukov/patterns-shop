@@ -1,5 +1,6 @@
 package UserMenu;
 
+// Действия для пунктов меню
 public class Action {
     private final String actionName;       // Наименование пункта меню
     private final Executable actionMethod; // Метод, соответствующий этому пункту меню

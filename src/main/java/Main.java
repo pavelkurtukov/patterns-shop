@@ -14,12 +14,16 @@ public class Main {
 
         System.out.println("Привет, " + userName + "!");
 
-        /*menuBuilder = new UserMenuBuilder();
-        menuBuilder.setMenuName("Подменю");
-        menuBuilder.addMenuItem("Написать \"Трям!\" и вернуться в главное меню!", () -> System.out.println("Трям!"), true);
-        menuBuilder.addMenuItem("Второй пункт подменю", () -> System.out.println("Действие для второго пункта подменю"));
-        menuBuilder.addMenuItem("Назад", null, true);
-        UserMenu subMenu = menuBuilder.build();*/
+        // Наполняем корзину (для время дебага)
+        /*ShoppingCart cart = ShoppingCart.getInstance();
+        try {
+            cart.add(store.getProductByAtricul("item-003"), 1);
+            cart.add(store.getProductByAtricul("item-005"), 1);
+        } catch (AvailableProductCountExceededException e) {
+            throw new RuntimeException(e);
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
+        }*/
 
         showMainMenu();
     }

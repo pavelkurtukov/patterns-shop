@@ -61,7 +61,7 @@ public class Store {
             ShoppingCart.getInstance().addProduct(product, count);
             System.out.printf("Товар добавлен в корзину:  %s\n", product);
             System.out.println("Возвращаемся в главное меню...");
-        } catch (AvailableProductCountExceededException e) {
+        } catch (AvailableProductCountExceededException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }

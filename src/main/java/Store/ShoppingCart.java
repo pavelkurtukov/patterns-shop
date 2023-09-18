@@ -1,5 +1,7 @@
 package Store;
 
+import UserMenu.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +20,15 @@ public class ShoppingCart {
         return products;
     }
 
-    public void addProduct(Product product, int count) throws AvailableProductCountExceededException {
+    public void addProduct(Product product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
+        // Если товар уже добавлен в корзину - увеличиваем кол-во товара
+        if (products.containsKey(product)) {
+            products.put(product, products.get(product) + count);
+        } else {
+            products.put(product, count);
+        }
+        // Резервируем товар на складе
         product.reserve(count);
-        products.put(product, count);
     }
 
     // Показать Корзину
@@ -37,8 +45,44 @@ public class ShoppingCart {
                 totalSum += cartCount * product.getPrice();
             }
             System.out.println("Сумма к оплате: " + totalSum);
+
+            showShoppingCartMenu();
         } else {
             System.out.println("Корзина пуста");
         }
+    }
+
+    // Очистка корзины
+    public void clearShoppingCart() {
+        while (true) {
+            String cleanConfirm = Asker.askString("Вы действительно хотите удалить все товары из корзины [Y/N]?");
+            if (cleanConfirm.equalsIgnoreCase("y")) {
+                for (Map.Entry<Product, Integer> productEntry : products.entrySet()) {
+                    Product product = productEntry.getKey();
+                    int count = productEntry.getValue();
+                    try {
+                        product.unreserve(count); // Возвращаем товар из резерва
+                    } catch (AvailableUnreserveProductCountExceedException | IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                products.clear();
+                System.out.println("Корзина очищена");
+                return;
+            }
+            if (cleanConfirm.equalsIgnoreCase("n")) {
+                return;
+            }
+        }
+    }
+
+    // Меню корзины
+    public void showShoppingCartMenu() {
+        UserMenuBuilder menuBuilder = new UserMenuBuilder();
+        menuBuilder.setMenuName("Корзина");
+        menuBuilder.addMenuItem("Очистить корзину", this::clearShoppingCart);
+        //menuBuilder.addMenuItem("Удалить позицию", this::clearShoppingCart);
+        menuBuilder.addMenuItem("Назад (в главное меню)", null, true);
+        menuBuilder.build().show();
     }
 }

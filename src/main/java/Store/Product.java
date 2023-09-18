@@ -80,16 +80,34 @@ public class Product {
     }
 
     // Резервирование товара (для корзины)
-    public void reserve(int count) throws AvailableProductCountExceededException {
-        if (available >= count) {
-            available -= count;
+    public void reserve(int count) throws AvailableProductCountExceededException, IllegalArgumentException {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Количество резервируемых товаров должно быть больше 0");
+        }
+        if (this.available >= count) {
+            this.available -= count;
         } else {
-            throw new AvailableProductCountExceededException(available, count);
+            throw new AvailableProductCountExceededException(this.available, count);
+        }
+    }
+
+    // Возврат товаров из резерва (удаление из корзины)
+    public void unreserve(int count) throws AvailableUnreserveProductCountExceedException, IllegalArgumentException {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Превышено количество товара, которое можно вернуть из резерва");
+        }
+        if (count <= this.count - this.available) {
+            this.available += count;
+        } else {
+            throw new AvailableUnreserveProductCountExceedException(this.available, count);
         }
     }
 
     // Продажа товара (списание из зарезервинованных)
-    public void sale(int count) throws ReservedProductCountExceededException {
+    public void sale(int count) throws ReservedProductCountExceededException, IllegalArgumentException {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Количество заказываемых товаров должно быть больше 0");
+        }
         int reserved = count - available;
         if (reserved >= count) {
             available -= count;
@@ -102,13 +120,5 @@ public class Product {
     @Override
     public String toString() {
         return String.format("Товар {Артикул: '%s', Наименование: '%s', Описание: '%s', Цена: %s, Количество: %d, Доступно: %d}", articul, name, description, price, count, available);
-        /*return "Артикул: {" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", articul='" + articul + '\'' +
-                ", price=" + price +
-                ", count=" + count +
-                ", available=" + available +
-                '}';*/
     }
 }

@@ -20,7 +20,8 @@ public class ShoppingCart {
         return content;
     }
 
-    public void addProduct(Saleable product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
+    // Добавление товара или услуги
+    public void add(Saleable product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
         // Если товар уже добавлен в корзину - увеличиваем кол-во товара
         if (content.containsKey(product)) {
             content.put(product, content.get(product) + count);
@@ -33,23 +34,8 @@ public class ShoppingCart {
 
     // Показать Корзину
     public void showShoppingCart() {
-        ShoppingCart shoppingCart = ShoppingCart.getInstance();
-        Map<Saleable, Integer> categories = shoppingCart.getContent();
-        if (!categories.isEmpty()) {
-            int totalSum = 0;
-            System.out.println("Содержимое корзины:");
-            for (Map.Entry<Saleable, Integer> cartRow : categories.entrySet()) {
-                Saleable product = cartRow.getKey();
-                int cartCount = cartRow.getValue();
-                System.out.printf("%d x %s\n", cartCount, product);
-                totalSum += cartCount * product.getPrice();
-            }
-            System.out.println("Сумма к оплате: " + totalSum);
-
-            showShoppingCartMenu();
-        } else {
-            System.out.println("Корзина пуста");
-        }
+        showShoppingCartContent();
+        showShoppingCartMenu();
     }
 
     // Очистка корзины
@@ -76,10 +62,30 @@ public class ShoppingCart {
         }
     }
 
+    // Отображение содержимого корзины
+    public void showShoppingCartContent() {
+        ShoppingCart shoppingCart = ShoppingCart.getInstance();
+        Map<Saleable, Integer> categories = shoppingCart.getContent();
+        if (!categories.isEmpty()) {
+            int totalSum = 0;
+            System.out.println("Содержимое корзины:");
+            for (Map.Entry<Saleable, Integer> cartRow : categories.entrySet()) {
+                Saleable product = cartRow.getKey();
+                int cartCount = cartRow.getValue();
+                System.out.printf("%d x %s\n", cartCount, product);
+                totalSum += cartCount * product.getPrice();
+            }
+            System.out.println("Сумма к оплате: " + totalSum);
+        } else {
+            System.out.println("<Корзина пуста>");
+        }
+    }
+
     // Меню корзины
     public void showShoppingCartMenu() {
         UserMenuBuilder menuBuilder = new UserMenuBuilder();
         menuBuilder.setMenuName("Корзина");
+        menuBuilder.addMenuItem("Показать состав корзины", this::showShoppingCartContent);
         menuBuilder.addMenuItem("Очистить корзину", this::clearShoppingCart);
         //menuBuilder.addMenuItem("Удалить позицию", this::clearShoppingCart);
         menuBuilder.addMenuItem("Назад (в главное меню)", null, true);

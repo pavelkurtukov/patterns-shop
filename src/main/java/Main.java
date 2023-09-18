@@ -5,7 +5,6 @@ public class Main {
     public static String userName;
 
     public static void main(String[] args) {
-        //UserMenuBuilder menuBuilder;
         Store store = Store.getInstance();
 
         StoreFiller.fill(store);

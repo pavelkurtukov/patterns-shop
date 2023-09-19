@@ -33,14 +33,14 @@ public class ShoppingCart {
 
     // Добавление товара или услуги в корзину
     public void add(Saleable product, int count) throws AvailableProductCountExceededException, IllegalArgumentException {
+        // Резервируем товар на складе
+        product.reserve(count);
         // Если товар уже добавлен в корзину - увеличиваем кол-во товара
         if (content.containsKey(product)) {
             content.put(product, content.get(product) + count);
         } else {
             content.put(product, count);
         }
-        // Резервируем товар на складе
-        product.reserve(count);
     }
 
     // Показать Корзину
